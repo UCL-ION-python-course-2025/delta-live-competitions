@@ -66,8 +66,11 @@ class StickPileGame(HeadToHeadGame):
         move = player_to_play.choose_move(
             number_of_sticks_remaining=self.env.number_of_sticks_remaining,
         )
+        if move is None:
+            move = 0
         # This handles the player switch
         move_result = self.env._step(move)
+
         self.most_recent_move = move
 
         # Invalid move
