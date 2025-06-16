@@ -1,3 +1,4 @@
+import random
 from typing import List, Optional, Tuple
 
 import pygame
@@ -149,7 +150,11 @@ class StickPileGameViewer(HeadToHeadGameViewer):
             origin[0], origin[1], self.pixel_game_width, self.pixel_game_height
         )
         blit_position = scaled_sprite.get_rect()
-        blit_position.centerx = game_rectangle.centerx
+        random.seed(n_stick)
+        blit_position.centerx = (
+            game_rectangle.centerx
+            + self.pixel_game_width * 0.05 * random.uniform(-1, 1)
+        )
         blit_position.bottom = game_rectangle.bottom - n_stick * (new_height // 1.2)
 
         self._screen.blit(scaled_sprite, blit_position)
