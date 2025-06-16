@@ -38,7 +38,7 @@ class StickPileGame(HeadToHeadGame):
     def reset_game(self) -> int:
         print("reset game called")
         self.invalid_move = False
-        self.number_of_sticks_remaining, _, _, _ = self.env.reset()
+        self.number_of_sticks_remaining, _, _, _ = self.env.reset(take_first_step=False)
         self.team_a_sticks_taken = 0
         self.team_b_sticks_taken = 0
         self.round_over = False
@@ -47,8 +47,6 @@ class StickPileGame(HeadToHeadGame):
         return self.number_of_sticks_remaining
 
     def step(self) -> None:
-        print(f"Number of sticks rem {self.number_of_sticks_remaining}")
-        print(self.completed)
         if self.completed:
             return
 
@@ -71,6 +69,7 @@ class StickPileGame(HeadToHeadGame):
             self.invalid_move = True
             move = None
 
+        print(f"player to play {player_to_play.name}")
         if move is None:
             move = 0
         # This handles the player switch
