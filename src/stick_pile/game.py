@@ -33,7 +33,7 @@ class StickPileGame(HeadToHeadGame):
         self.round_over = False
         self.doing_reset = False
 
-        self.most_recent_move = 0
+        self.most_recent_move = None
 
     def reset_game(self) -> int:
         print("reset game called")

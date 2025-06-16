@@ -68,19 +68,6 @@ class StickPileGameViewer(HeadToHeadGameViewer):
         )
 
         self._screen.blit(img, rect)
-
-        subsurf = self._screen.subsurface(
-            (
-                origin[0],
-                origin[1],
-                self.pixel_game_width,
-                self.pixel_game_height,
-            )
-        )
-
-        # render_game(board=game.env.state.board, screen=subsurf, update_display=False)
-        # Draw round score
-
         # Teascore names and counters
         for idx, team in enumerate([game.team_a, game.team_b]):
 
@@ -88,37 +75,54 @@ class StickPileGameViewer(HeadToHeadGameViewer):
             y_pos = origin[1] + self.pixel_game_height - self._font.get_height()
 
             # Turn not switched if the game is over
-            if game.round_over:
+
+            if game.most_recent_move is None:
+                sticks_taken = " "
+            elif game.round_over:
                 if idx == 0 and game.env.player_move == "player":
                     sticks_taken = game.most_recent_move
                 elif idx == 1 and game.env.player_move == "opponent":
                     sticks_taken = game.most_recent_move
                 else:
-                    sticks_taken = "  "
-
+                    sticks_taken = " "
             # Switched as the turn has already been switched
             elif idx == 0 and game.env.player_move == "opponent":
                 sticks_taken = game.most_recent_move
             elif idx == 1 and game.env.player_move == "player":
                 sticks_taken = game.most_recent_move
             else:
-                sticks_taken = "  "
+                sticks_taken = " "
+
+            offset = self.pixel_game_width // 4
+            if idx == 0:
+                offset = offset * -1
 
             self.create_text(
-                text=f"Sticks taken: {sticks_taken} \nTotal sticks = {game.team_a_sticks_taken if idx == 0 else game.team_b_sticks_taken}",
-                color=BLACK_COLOR,
-                pos=(x_pos, y_pos + self._font.get_height()),
+                text=f"Took:\n{sticks_taken} stick(s)",
+                color=YELLOW_COLOR if idx == 0 else RED_COLOR,
+                pos=(
+                    x_pos + offset,
+                    y_pos + self._font.get_height(),
+                ),
                 font=self._font,
             )
 
             self.draw_score(origin, game)
             self.draw_team_names(origin, game)
+        # # Draw background of the board
+        # pygame.gfxdraw.box(
+        #     self._screen,
+        #     pygame.Rect(
+        #         origin[0],
+        #         origin[1],
+        #         self.pixel_game_width,
+        #         self.pixel_game_height,
+        #     ),
+        #     BLACK_COLOR,
+        # )
 
-        # Draw background of the board
         for n_stick in range(game.number_of_sticks_remaining):
             self.render_stick(origin, n_stick)
-
-        # Step 8: Draw it
 
     def render_stick(self, origin: Tuple[int, int], n_stick: int) -> None:
         rotated_sprite = pygame.transform.rotate(
