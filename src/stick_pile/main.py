@@ -54,7 +54,7 @@ def main() -> None:
         "Stick Game",
         teams,
         StickPileGame,
-        min_time_per_step=0.4,
+        min_time_per_step=0.9,
         moves_per_state_change=1,
         # speed_increase_factor=2,
     )
