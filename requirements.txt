@@ -1,0 +1,11 @@
+numpy
+pygame
+pytest
+tqdm
+torch
+mypy_extensions
+delta-utils
+git+https://github.com/Delta-Academy/PettingZoo.git@master
+git+https://github.com/Delta-Academy/rlcard.git
+git+https://github.com/Delta-Academy/Go@main
+git+https://github.com/Delta-Academy/shooter.git@main

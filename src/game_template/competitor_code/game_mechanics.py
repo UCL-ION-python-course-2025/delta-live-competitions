@@ -1,0 +1,2 @@
+class TemplateMechanics:
+    pass

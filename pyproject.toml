@@ -1,0 +1,16 @@
+[tool.black]
+line-length = 100
+target-version = ['py37', 'py38']
+exclude = '''
+/(
+    src/.*/competitor_code/team_[0-9]*\.py
+    venv.*
+    \.eggs
+  | \.git
+  | \.mypy_cache
+)/
+'''
+[tool.pytest.ini_options]
+pythonpath = [
+  ".", "src",
+]
