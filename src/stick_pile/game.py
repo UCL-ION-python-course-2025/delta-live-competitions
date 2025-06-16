@@ -63,9 +63,14 @@ class StickPileGame(HeadToHeadGame):
         team_a_turn = self.env.player_move == "player"
         player_to_play = self.team_a if team_a_turn else self.team_b
 
-        move = player_to_play.choose_move(
-            number_of_sticks_remaining=self.env.number_of_sticks_remaining,
-        )
+        try:
+            move = player_to_play.choose_move(
+                number_of_sticks_remaining=self.env.number_of_sticks_remaining,
+            )
+        except:
+            self.invalid_move = True
+            move = None
+
         if move is None:
             move = 0
         # This handles the player switch
