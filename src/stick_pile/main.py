@@ -1,13 +1,16 @@
 import os
 from importlib import import_module
 from pathlib import Path
+import sys
 
 from competition_controller import CompetitionController
 from stick_pile.game import StickPileGame
-from game_template.tournament import TemplateTournament
 from play_competition import play_competition
 from team import Team
 from stick_pile.visuals import StickPileGameViewer
+import delta_stick_pile
+
+sys.path.append(delta_stick_pile.__path__[0])  # isort:skip
 
 
 def main() -> None:
@@ -28,7 +31,10 @@ def main() -> None:
         ):
             count += 1
             file_name = entry.name.split(".py")[0]
-            mod = import_module(file_name, ".competitor_code")
+            # mod = import_module(file_name, ".competitor_code")
+            mod = __import__(
+                f"stick_pile.competitor_code.{file_name}", fromlist=["None"]
+            )
             try:
                 func = getattr(mod, "choose_move")
             except AttributeError as e:
@@ -54,7 +60,7 @@ def main() -> None:
         "Stick Game",
         teams,
         StickPileGame,
-        min_time_per_step=0.9,
+        min_time_per_step=0.1,
         moves_per_state_change=1,
         # speed_increase_factor=2,
     )
