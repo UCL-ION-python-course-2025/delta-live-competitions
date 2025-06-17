@@ -64,7 +64,7 @@ def main() -> None:
         StickPileGame,
         min_time_per_step=1,
         moves_per_state_change=1,
-        # speed_increase_factor=2,
+        plate_enabled=False,
     )
 
     view = StickPileGameViewer(controller=controller)
