@@ -49,7 +49,7 @@ class Observer(ABC):
         icon = pygame.image.load(f"{Path.cwd()}/delta_logo.png")
         pygame.display.set_icon(icon)
         pygame.display.set_caption(self.controller.name)
-        self._screen = pygame.display.set_mode((800, 600))
+        self._screen = pygame.display.set_mode((1600, 1000))
         self.reset_games()
         self.clock = pygame.time.Clock()
 

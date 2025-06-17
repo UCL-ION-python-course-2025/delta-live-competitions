@@ -58,14 +58,17 @@ class StickPileGameViewer(HeadToHeadGameViewer):
         )
         self._screen.blit(img, rect)
 
-        title = f"Number of sticks remaining {game.number_of_sticks_remaining}"
+        remaining = f"# sticks remaining {game.number_of_sticks_remaining}"
 
-        img = self._font.render(title, True, BLACK_COLOR, None)
+        font_remaining = pygame.font.SysFont(
+            "arial", round(self.pixel_game_height // 13)
+        )
+        img = font_remaining.render(remaining, True, BLACK_COLOR, None)
         rect = img.get_rect()
 
         rect.center = (
             origin[0] + self.pixel_game_width // 2,
-            origin[1] + self.pixel_game_height + self._font.get_height() * 3,
+            origin[1] + self.pixel_game_height + self._font.get_height() // 2,
         )
 
         self._screen.blit(img, rect)
@@ -119,7 +122,7 @@ class StickPileGameViewer(HeadToHeadGameViewer):
         #         self.pixel_game_width,
         #         self.pixel_game_height,
         #     ),
-        #     BLACK_COLOR,
+        #     WHITE_COLOR,
         # )
 
         for n_stick in range(game.number_of_sticks_remaining):
@@ -150,10 +153,10 @@ class StickPileGameViewer(HeadToHeadGameViewer):
             origin[0], origin[1], self.pixel_game_width, self.pixel_game_height
         )
         blit_position = scaled_sprite.get_rect()
-        random.seed(n_stick)
+        local_rng = random.Random(n_stick)
         blit_position.centerx = (
             game_rectangle.centerx
-            + self.pixel_game_width * 0.05 * random.uniform(-1, 1)
+            + self.pixel_game_width * 0.05 * local_rng.uniform(-1, 1)
         )
         blit_position.bottom = game_rectangle.bottom - n_stick * (new_height // 1.2)
 
@@ -217,7 +220,7 @@ class StickPileGameViewer(HeadToHeadGameViewer):
         font = pygame.font.SysFont("arial", round(self.pixel_game_height / 10))
 
         self.create_text(
-            text=game.team_a.name,
+            text=game.team_a.name + ("*" if game.went_first == "player" else ""),
             color=YELLOW_COLOR,
             pos=(
                 origin[0] - self.pixel_game_width // 4,
@@ -228,7 +231,7 @@ class StickPileGameViewer(HeadToHeadGameViewer):
             background_color=None,
         )
         self.create_text(
-            text=game.team_b.name,
+            text=game.team_b.name + ("*" if game.went_first == "opponent" else ""),
             color=RED_COLOR,
             pos=(
                 origin[0] + 5 * self.pixel_game_width // 4,
@@ -237,4 +240,15 @@ class StickPileGameViewer(HeadToHeadGameViewer):
             font=font,
             max_width=self.pixel_game_width // 4,
             background_color=None,
+        )
+
+    def get_rules(self) -> str:
+        return (
+            f"Welcome to the stick pile tournament\n\n"
+            f"You win a round by taking the final stick\n\n"
+            f"Each round is first to three games. \n\n"
+            f"The player to go first is alternated each time.\n\n"
+            f"The first moving player is indicated with an asterix.\n\n"
+            f"The winner of each game will move to the next round\n"
+            f"until we have an overall winner\n\n"
         )

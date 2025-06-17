@@ -108,7 +108,8 @@ class ShooterGameViewer(HeadToHeadGameViewer):
 
             elif game_object.name == "bullet":
                 blit_position = (
-                    pygame.Vector2(origin) + game_object.position * self.game_to_pixel_ratio
+                    pygame.Vector2(origin)
+                    + game_object.position * self.game_to_pixel_ratio
                 )
                 self._screen.blit(sprite, blit_position)
 
@@ -130,7 +131,9 @@ class ShooterGameViewer(HeadToHeadGameViewer):
                 )
 
         # Draw team names of the game on the left of it
-        team_a_width = self._font.render(game.team_a.name, True, WHITE_COLOR).get_width()
+        team_a_width = self._font.render(
+            game.team_a.name, True, WHITE_COLOR
+        ).get_width()
         names_y_pos = origin[1] + self.pixel_game_height + self._font.get_height() // 2
         self.create_text(
             text=game.team_a.name,
@@ -140,7 +143,9 @@ class ShooterGameViewer(HeadToHeadGameViewer):
             max_width=team_a_width,
             background_color=game.team_a_color,
         )
-        team_b_width = self._font.render(game.team_b.name, True, WHITE_COLOR).get_width()
+        team_b_width = self._font.render(
+            game.team_b.name, True, WHITE_COLOR
+        ).get_width()
         self.create_text(
             text=game.team_b.name,
             color=BLACK_COLOR,
@@ -180,7 +185,9 @@ class ShooterGameViewer(HeadToHeadGameViewer):
 
         # Draw the score
         font = self._font
-        img = font.render(str(game.team_a_score), True, PLAYER_ONE_COLOR, LIGHT_GRAY_COLOR)
+        img = font.render(
+            str(game.team_a_score), True, PLAYER_ONE_COLOR, LIGHT_GRAY_COLOR
+        )
         rect = img.get_rect()
         rect.center = (
             origin[0] - font.get_height() // 2,
@@ -188,7 +195,9 @@ class ShooterGameViewer(HeadToHeadGameViewer):
         )
         self._screen.blit(img, rect)
 
-        img = font.render(str(game.team_b_score), True, PLAYER_TWO_COLOR, LIGHT_GRAY_COLOR)
+        img = font.render(
+            str(game.team_b_score), True, PLAYER_TWO_COLOR, LIGHT_GRAY_COLOR
+        )
         rect = img.get_rect()
         rect.center = (
             origin[0] + self.pixel_game_width + font.get_height() // 2,

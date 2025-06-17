@@ -19,6 +19,7 @@ class StickPileGame(HeadToHeadGame):
         self.team_b = team_b
         self.team_a_color = BLACK_COLOR
         self.team_b_color = BLACK_COLOR
+        self.both_teams_progress_on_draw = False
         self.env = StickPile(
             self.team_b.choose_move,
             verbose=False,
@@ -28,6 +29,7 @@ class StickPileGame(HeadToHeadGame):
         self.team_a_score = 0
         self.team_b_score = 0
         self.n_games = 0
+        self.went_first = None
         self.number_of_sticks_remaining = self.reset_game()
         self.name = name
         self.round_over = False
@@ -39,11 +41,15 @@ class StickPileGame(HeadToHeadGame):
         print("reset game called")
         self.invalid_move = False
         self.number_of_sticks_remaining, _, _, _ = self.env.reset(take_first_step=False)
+
+        if self.went_first is not None and self.went_first == self.env.player_move:
+            self.env.switch_player()
+        self.went_first = self.env.player_move
+
         self.team_a_sticks_taken = 0
         self.team_b_sticks_taken = 0
         self.round_over = False
         super(StickPileGame, self).reset_game()
-
         return self.number_of_sticks_remaining
 
     def step(self) -> None:
