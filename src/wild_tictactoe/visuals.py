@@ -59,7 +59,7 @@ class WildTictactoeGameViewer(HeadToHeadGameViewer):
             game_coords[1] * self.game_to_pixel_ratio
         )
 
-    def draw_title(self, title: str):
+    def draw_title(self, title: str) -> None:
         # Write title at the top
         title_font = pygame.font.SysFont("arial", 64)
         screen_width, _ = pygame.display.get_surface().get_size()
@@ -111,7 +111,7 @@ class WildTictactoeGameViewer(HeadToHeadGameViewer):
         # Draw on title of the game on the left of it
         num_games = len(self.controller.rounds_of_games[-1])
         font = pygame.font.SysFont(
-            "monospace", int(40 / num_games ** (1 / 3)), bold=True
+            "monospace", int(35 / num_games ** (1 / 3)), bold=False
         )
         for count, (text, font_color, bg_color) in enumerate(
             zip(
@@ -134,7 +134,7 @@ class WildTictactoeGameViewer(HeadToHeadGameViewer):
                     + int((count - 1) * font.get_linesize() * 3),
                 ),
                 font=font,
-                max_width=self.pixel_game_width * 2 // 3,
+                max_width=self.pixel_game_width * 2 // 2,
                 background_color=bg_color,
             )
 

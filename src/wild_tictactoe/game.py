@@ -3,7 +3,9 @@ from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
 from delta_wild_tictactoe.game_mechanics import Cell, WildTictactoeEnv
-from delta_wild_tictactoe.game_mechanics import choose_move_randomly as robot_choose_move
+from delta_wild_tictactoe.game_mechanics import (
+    choose_move_randomly as robot_choose_move,
+)
 from delta_wild_tictactoe.game_mechanics import (
     get_empty_board,
     is_board_full,
@@ -85,7 +87,14 @@ class WildTictactoeGame(HeadToHeadGame):
                 self.robot_first_move_location = None
             self.robot_first_move = True
         else:
-            move, counter = self.next_to_play.choose_move(board=self.board.copy())
+            try:
+                move, counter = self.next_to_play.choose_move(board=self.board.copy())
+            except Exception as e:
+                print(
+                    f"Invalid move from {self.next_to_play.name} choosing move randomly"
+                )
+                move, counter = robot_choose_move(board=self.board.copy())
+
             self.robot_first_move = False
 
         poss_move_list = poss_moves(self.board)
