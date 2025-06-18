@@ -37,7 +37,7 @@ class Connect4GameViewer(HeadToHeadGameViewer):
             )
         )
 
-    def draw_game(self, game: Connect4Game):
+    def draw_game(self, game: Connect4Game) -> None:
         """
         Draws board[c][r] with c = 0 and r = 0 being bottom left
         0 = empty (background color)
@@ -54,7 +54,9 @@ class Connect4GameViewer(HeadToHeadGameViewer):
             if game.team_a_counter_to_win is None
             else f"\n# To win: {game.team_a_counter_to_win}"
         )
-        text_length = max(self._font.size(game.team_a.name)[0], self._font.size(additional)[0])
+        text_length = max(
+            self._font.size(game.team_a.name)[0], self._font.size(additional)[0]
+        )
         self.create_text(
             text=game.team_a.name + additional,
             color=BLACK_COLOR,
@@ -71,7 +73,9 @@ class Connect4GameViewer(HeadToHeadGameViewer):
             if game.team_b_counter_to_win is None
             else f"\n# To win: {game.team_b_counter_to_win}"
         )
-        text_length = max(self._font.size(game.team_b.name)[0], self._font.size(additional)[0])
+        text_length = max(
+            self._font.size(game.team_b.name)[0], self._font.size(additional)[0]
+        )
         self.create_text(
             text=game.team_b.name + additional,
             color=BLACK_COLOR,
@@ -85,14 +89,20 @@ class Connect4GameViewer(HeadToHeadGameViewer):
 
         # Draw the score
         for count, (score, color) in enumerate(
-            [(game.team_a_score, game.team_a_color), (game.team_b_score, game.team_b_color)]
+            [
+                (game.team_a_score, game.team_a_color),
+                (game.team_b_score, game.team_b_color),
+            ]
         ):
             score = int(score)
             score_len = len(str(score))
             rect = pygame.Rect(
                 origin[0]
                 - self._font.get_height() * 5 * score_len // 4
-                + count * (self.pixel_game_width + self._font.get_height() * 3 * score_len // 2),
+                + count
+                * (
+                    self.pixel_game_width + self._font.get_height() * 3 * score_len // 2
+                ),
                 origin[1],
                 self._font.get_height() * score_len,
                 self._font.get_height() * 3 // 2,
@@ -105,7 +115,10 @@ class Connect4GameViewer(HeadToHeadGameViewer):
             rect.center = (
                 origin[0]
                 - self._font.get_height() * 3 * score_len // 4
-                + count * (self.pixel_game_width + self._font.get_height() * 3 * score_len // 2),
+                + count
+                * (
+                    self.pixel_game_width + self._font.get_height() * 3 * score_len // 2
+                ),
                 origin[1] + self._font.get_height() * 3 // 4,
             )
             self._screen.blit(img, rect)
@@ -136,7 +149,9 @@ class Connect4GameViewer(HeadToHeadGameViewer):
         elif has_won(game.board, game.most_recent_column):
             top = get_top_piece_row_index(game.board, game.most_recent_column)
             winner = game.board[top, game.most_recent_column]
-            winning_pieces = get_pieces_four_connected(game.board, (top, game.most_recent_column))
+            winning_pieces = get_pieces_four_connected(
+                game.board, (top, game.most_recent_column)
+            )
         else:
             winner = None
 
@@ -147,9 +162,7 @@ class Connect4GameViewer(HeadToHeadGameViewer):
                 color = (
                     game.team_a_color
                     if space == 1
-                    else game.team_b_color
-                    if space == -1
-                    else BACKGROUND_COLOR
+                    else game.team_b_color if space == -1 else BACKGROUND_COLOR
                 )
 
                 disc_size = int(DISC_SIZE_RATIO * self.SQUARE_SIZE / 2)
@@ -224,7 +237,11 @@ def get_pieces_four_connected(
         # Take steps in positive direction until we hit a space not filled by this player's piece
         row = piece_location[0] + steps_in_positive_dir * direction[0]
         col = piece_location[1] + steps_in_positive_dir * direction[1]
-        while 0 <= row < board.shape[0] and 0 <= col < board.shape[1] and board[row, col] == player:
+        while (
+            0 <= row < board.shape[0]
+            and 0 <= col < board.shape[1]
+            and board[row, col] == player
+        ):
             connected_four.append((row, col))
             num_in_a_row += 1
             steps_in_positive_dir += 1

@@ -64,13 +64,13 @@ class Connect4Game(HeadToHeadGame):
             self.reset_game()
         # Get the right next player whose turn it is
         player = self.team_a if self.player_turn == 1 else self.team_b
-        column_index = player.choose_move(state=self.player_turn * self.board)
+        column_index = player.choose_move(board=self.player_turn * self.board)
         possible_moves = list(range(self.board.shape[1]))
         possible_moves = [
             move for move in possible_moves if not is_column_full(self.board, move)
         ]
         assert column_index in possible_moves
-        _, row_idx = place_piece(self.board, column_index, self.player_turn)
+        self.board, row_idx = place_piece(self.board, column_index, self.player_turn)
         self.player_turn *= -1
 
         won = has_won(self.board, column_index)
